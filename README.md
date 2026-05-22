@@ -49,6 +49,6 @@ bios flashing can be done using some MFlash(MSI) or EZFlash(ASUS) utilities in y
 3. any SMI triggers the handler, it processes the command
 4. after handshake switches to shared memory, personally i used nvram variables after only to generate smi(trigger smm), i used delete kicks to not generate lags
 5. profit
-<img width="300" height="115" alt="image" src="https://github.com/user-attachments/assets/f32c19c4-fc03-4ebc-8a2c-9df21063d760" />
+<img width="500" height="115" alt="image" src="https://github.com/user-attachments/assets/f32c19c4-fc03-4ebc-8a2c-9df21063d760" />
 
 
