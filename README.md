@@ -4,7 +4,7 @@ uefi smm rw; reads/writes memory in ring -2, controlled by usermode client, supp
 
 communication through shared memory by default (can be made through nvram). smm inits on first smi after os boot, finds ntoskrnl, system cr3, etc.
 
-if u want to use it, control smi count under 100 per second (less = better), more smi = more cpu lag(smm takes cpu on each smi until smm done). so, that's the main detection vector, if u do many smi per second more time your cpu stays in smm and that can be measured for example by rdtsc/rdtscp timing.
+if u want to use it, control smi count under 100 per second (100 is already ALOT and will be detected for sure, also may cause cpu lags; less = better), more smi = more cpu lag(smm takes cpu on each smi until smm done). so, that's the main detection vector, if u do many smi per second more time your cpu stays in smm and that can be measured for example by rdtsc/rdtscp timing.
 
 ## disclaimer
 
