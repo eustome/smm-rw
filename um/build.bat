@@ -1,9 +1,25 @@
 @echo off
-set MSVC=C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207
-set SDKINC=C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0
-set SDKLIB=C:\Program Files (x86)\Windows Kits\10\Lib\10.0.26100.0
-set SRC=c:\Users\n\Desktop\spoofer\um
+setlocal
 
-"%MSVC%\bin\Hostx64\x64\cl.exe" /nologo /W3 /O2 /I"%MSVC%\include" /I"%SDKINC%\ucrt" /I"%SDKINC%\um" /I"%SDKINC%\shared" /I"%SRC%" /Fe"%SRC%\client.exe" "%SRC%\main.c" /link /SUBSYSTEM:CONSOLE /LIBPATH:"%MSVC%\lib\x64" /LIBPATH:"%SDKLIB%\ucrt\x64" /LIBPATH:"%SDKLIB%\um\x64" kernel32.lib advapi32.lib shell32.lib
+set SRC=%~dp0
+if "%SRC:~-1%"=="\" set SRC=%SRC:~0,-1%
+
+set VSWHERE=%ProgramFiles(x86)%\Microsoft Visual Studio\Installer\vswhere.exe
+if not exist "%VSWHERE%" (
+    echo [-] vswhere.exe not found. Install Visual Studio 2022 with C++ tools.
+    exit /b 1
+)
+for /f "usebackq delims=" %%i in (
+    `"%VSWHERE%" -latest -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath`
+) do set VS_PATH=%%i
+if not defined VS_PATH (
+    echo [-] Visual Studio with C++ workload not found.
+    exit /b 1
+)
+call "%VS_PATH%\VC\Auxiliary\Build\vcvarsall.bat" x64 >nul 2>&1
+
+cl.exe /nologo /W3 /O2 /I"%SRC%" /Fe"%SRC%\client.exe" "%SRC%\main.c" ^
+    /link /SUBSYSTEM:CONSOLE kernel32.lib advapi32.lib shell32.lib ntdll.lib
 if errorlevel 1 (echo [-] FAIL & exit /b 1)
-echo [+] built: client.exe
+
+echo [+] client.exe
